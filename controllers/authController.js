@@ -28,8 +28,10 @@ const pathPost = async ( req, res ) => {
 
         const token = await generateJWT( user.id );
 
-        res.json({
-            user
+        /************ ELIMINAR TOKEN ANTES DEL DEPLOY ***************************/
+        res.status(201).json({
+            user,
+            token
         });
 
     } catch (error) {
@@ -74,7 +76,8 @@ const googleSignIn = async ( req, res ) => {
 
         const token = await generateJWT( user.id );
 
-        res.json({
+        /************ ELIMINAR TOKEN ANTES DEL DEPLOY ***************************/
+        res.status(201).json({
             user,
             token
         });

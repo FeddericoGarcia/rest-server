@@ -4,7 +4,8 @@ const { check } = require('express-validator');
 const { pathGet } = require('../controllers/categoryController');
 
 const {
-    inputValidator
+    inputValidator,
+    validateJWT
 } = require('../middlewares');
 
 const router = Router();
@@ -18,6 +19,8 @@ router.get('/:id',[
 ], pathGet)
 
 router.post('/',[
+    validateJWT,
+    check('name', 'The name is required').not().isEmpty(),
     inputValidator
 ], pathGet)
 

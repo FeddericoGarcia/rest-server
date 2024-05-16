@@ -1,5 +1,4 @@
-const Role = require('../models/role');
-const User = require('../models/user');
+const {Role, User, Category} = require('../models');
 
 const verifyRole = async ( role = '' ) =>{
 
@@ -28,8 +27,18 @@ const verifyID = async ( id ) => {
 
 }
 
+const verifyCategory = async ( id ) => {
+
+    const IDExists = await Category.findById( id );
+    if ( !IDExists ) {
+        throw new Error(`This Category ${ id } not exists, check it`);
+    };
+
+}
+
 module.exports = {
     verifyRole,
     verifyEmail,
-    verifyID
+    verifyID,
+    verifyCategory
 }

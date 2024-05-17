@@ -27,18 +27,20 @@ const pathGet = async (req, res = response) => {
 const pathGetID = async ( req, res ) => {
     
     try {
-        const { id } = req.params
-        const category = await Category.find({ id })
+        const { id } = req.query;
+        const [ categories ] = await Promise.all([
+            Category.findOne({ id })
+        ]);
 
-        if ( !category ) {
-            console.log(category)
+        if ( !categories ) {
+            console.log(categories)
             res.status(403).json({
                 msg: `There are not categories`
             })
         }
 
         res.status(200).json({
-            category
+            categories
         })
 
     } catch (error) {

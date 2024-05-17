@@ -17,7 +17,7 @@ router.get('/',[
 ], pathGet)
 
 router.get('/:id',[
-    // check('id', 'It is not a valid ID').isMongoId(),
+    check('id', 'It is not a valid ID').isMongoId(),
     check('id').custom( verifyCategory ),
     inputValidator
 ], pathGetID)

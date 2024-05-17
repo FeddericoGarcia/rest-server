@@ -8,6 +8,7 @@ const pathGet = async (req, res = response) => {
         const [ total_docs, categories] = await Promise.all([
             Category.countDocuments({state}),
             Category.find({state})
+                .populate('user', 'name')
         ]);
     
         res.status(201).json({
@@ -27,17 +28,11 @@ const pathGet = async (req, res = response) => {
 const pathGetID = async ( req, res ) => {
     
     try {
-        const { id } = req.query;
+        const { id } = req.params;
         const [ categories ] = await Promise.all([
-            Category.findOne({ id })
+            Category.findById( id )
+                .populate('user', 'name')
         ]);
-
-        if ( !categories ) {
-            console.log(categories)
-            res.status(403).json({
-                msg: `There are not categories`
-            })
-        }
 
         res.status(200).json({
             categories
@@ -89,17 +84,12 @@ const pathPut = async ( req, res ) => {
 
     try {
         const { id } = req.params;
-        const { name, state, user } = req.body;
+        const { user, state, ...data } = req.body;
 
-        if ( !name ) {
-            res.status(401).json({
-                msg: `There are incorrect parameters`
-            });
-        }
+        data.name = data.name.toUpperCase();
+        // data.user = req.user._id;        
     
-        const category = { name, state, user };
-        
-        await Category.findByIdAndUpdate(id, category);
+        const category = await Category.findByIdAndUpdate(id, data, { new: true});
         
         res.status(201).json({
             msg: `The category ${ category.name } is update`,

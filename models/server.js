@@ -9,10 +9,10 @@ class Server {
         this.app = express();
         this.port = process.env.port || PORT;
         this.paths = {
-            home: `/home`,
-            user: `/dashboard/user`,
-            auth: `/auth`,
-            category: `/category`,
+            home: `/api/home`,
+            user: `/api/dashboard/user`,
+            auth: `/api/auth`,
+            category: `/api/category`,
         }
         
         this.dbConnection();

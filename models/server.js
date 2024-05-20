@@ -10,6 +10,7 @@ class Server {
         this.port = process.env.port || PORT;
         this.paths = {
             home: `/home`,
+            user: `/dashboard/user`,
             auth: `/auth`,
             category: `/category`,
         }
@@ -34,7 +35,8 @@ class Server {
     }
     
     routes(){
-        this.app.use(this.paths.home, require('../routes/path'));
+        // this.app.use(this.paths.home, require('../routes/path'));
+        this.app.use(this.paths.user, require('../routes/userPath'));
         this.app.use(this.paths.category, require('../routes/category'));
         this.app.use(this.paths.auth, require('../routes/authPath'));
     }

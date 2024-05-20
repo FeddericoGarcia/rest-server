@@ -86,10 +86,10 @@ const pathPut = async ( req, res ) => {
         const { id } = req.params;
         const { user, state, ...data } = req.body;
 
-        data.name = data.name.toUpperCase();
-        // data.user = req.user._id;        
+        data.name = data.name.toUpperCase();  
     
-        const category = await Category.findByIdAndUpdate(id, data, { new: true});
+        const category = await Category.findByIdAndUpdate(id, data, { new: true})
+            .populate('user', 'name');
         
         res.status(201).json({
             msg: `The category ${ category.name } is update`,

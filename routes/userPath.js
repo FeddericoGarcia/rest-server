@@ -4,11 +4,10 @@ const { check } = require('express-validator');
 const {
     inputValidator,
     validateJWT,
-    // roleValid,
     haveRole
 } = require('../middlewares');
 
-const { pathGet, pathPatch, pathPut, pathPost, pathDelete } = require('../controllers/pathController');
+const { pathGet, pathPatch, pathPut, pathPost, pathDelete } = require('../controllers/userController');
 const { verifyRole, verifyEmail, verifyID } = require('../helpers/validators');
 
 const router = Router();
@@ -34,7 +33,6 @@ router.post('/',[
 
 router.delete('/:id',[
     validateJWT,
-    // roleValid,
     haveRole('ADMIN', 'MOD'),
     check('id', 'It is not a valid ID').isMongoId(),
     check('id').custom( verifyID ),

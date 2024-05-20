@@ -5,7 +5,8 @@ const { pathGet, pathGetID, pathPost, pathPut, pathDelete  } = require('../contr
 
 const {
     inputValidator,
-    validateJWT
+    validateJWT,
+    roleValid
 } = require('../middlewares');
 
 const { verifyCategory } = require('../helpers/validators');
@@ -29,10 +30,17 @@ router.post('/',[
 ], pathPost)
 
 router.put('/:id',[
+    validateJWT,
+    check('id').custom( verifyCategory ),
+    check('name', 'The name is required').not().isEmpty(),
     inputValidator
 ], pathPut)
 
 router.delete('/:id',[
+    validateJWT,
+    roleValid,
+    check('id', 'It is not a valid ID').isMongoId(),
+    check('id').custom( verifyCategory ),
     inputValidator
 ], pathDelete)
 

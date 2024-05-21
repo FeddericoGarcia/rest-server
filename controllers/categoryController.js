@@ -24,7 +24,6 @@ const pathGet = async (req, res = response) => {
     }
 
 }
-
 const pathGetID = async ( req, res ) => {
     
     try {

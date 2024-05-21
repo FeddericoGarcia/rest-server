@@ -1,7 +1,13 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { pathGet, pathGetID, pathPost, pathPut, pathDelete  } = require('../controllers/categoryController');
+const { 
+    pathGet, 
+    pathGetID, 
+    pathPost, 
+    pathPut, 
+    pathDelete  
+} = require('../controllers/categoryController');
 
 const {
     inputValidator,

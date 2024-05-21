@@ -13,6 +13,7 @@ class Server {
             user: `/api/dashboard/user`,
             auth: `/api/auth`,
             category: `/api/category`,
+            products: `/api/products`,
         }
         
         this.dbConnection();
@@ -37,8 +38,9 @@ class Server {
     routes(){
         // this.app.use(this.paths.home, require('../routes/path'));
         this.app.use(this.paths.user, require('../routes/userPath'));
-        this.app.use(this.paths.category, require('../routes/category'));
+        this.app.use(this.paths.category, require('../routes/categoryPath'));
         this.app.use(this.paths.auth, require('../routes/authPath'));
+        this.app.use(this.paths.products, require('../routes/productsPath'));
     }
 
     listen(){

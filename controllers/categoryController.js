@@ -1,4 +1,5 @@
 const { response } = require('express');
+
 const { Category } = require('../models');
 
 const pathGet = async (req, res = response) => {

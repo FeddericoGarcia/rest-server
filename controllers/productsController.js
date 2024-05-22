@@ -1,5 +1,6 @@
-const { Product } = require('../models');
+const { Product, Category } = require('../models');
 
+//TODO
 const pathGet = async ( req, res ) => {
 
     try {
@@ -7,7 +8,7 @@ const pathGet = async ( req, res ) => {
         const [ total_docs, product] = await Promise.all([
             Product.countDocuments({state}),
             Product.find({state})
-                .populate('user', 'name')
+                // .populate('user', 'name')
         ]);
     
         res.status(201).json({
@@ -24,14 +25,28 @@ const pathGet = async ( req, res ) => {
 }
 const pathGetID = async ( req, res ) => {
 
+    try {
+        const { id } = req.params;
+        const product = await Product.findById( id );
+
+        res.status(200).json({
+            product
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(403).json({
+            msg: 'Something went wrong in controller'
+        });
+    }
 }
+// TODO
 const pathPost = async ( req, res ) => {
     
     try {
         const name = req.body.name.toUpperCase();
-        const { id } = req.body
 
-        const productDB = await Product.findById( id );
+        const productDB = await Product.findOne({ name });
 
         if ( productDB ){
             res.status(400).json({
@@ -62,9 +77,49 @@ const pathPost = async ( req, res ) => {
 }
 const pathPut = async ( req, res ) => {
 
+    try {
+        const { id } = req.params;
+        const { user, state, ...data } = req.body;
+
+        data.name = data.name.toUpperCase();  
+    
+        const product = await Product.findByIdAndUpdate(id, data, { new: true})
+        
+        res.status(201).json({
+            msg: `The product ${ product.name } is update`,
+            product
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(401).json({
+            msg: 'Something went wrong in controller'
+        });
+    }
 }
+// SOLUCIONAR EL CAMBIO DE ESTADO YA QUE ES BOOLEANO Y QUEDA COMO STRING EN MONGODB
 const pathDelete = async ( req, res ) => {
 
+    try {
+        const { id } = req.params;
+        const product = await Product.findByIdAndUpdate(id, { state: false});
+
+        if( !product.state ){
+            res.status(401).json({
+                msg: `The product ${ product.name } is inactive, status in false`
+            });
+        }
+
+        res.status(201).json({
+            msg: 'product has been deleted',
+            product
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(401).json({
+            msg: 'Something went wrong in controller'
+        });
+    }
 }
 
 module.exports = {

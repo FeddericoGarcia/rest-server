@@ -15,7 +15,7 @@ const {
     roleValid
 } = require('../middlewares');
 
-const { verifyCategory } = require('../helpers/validators');
+const { verifyProduct } = require('../helpers/validators');
 
 const router = Router();
 
@@ -25,19 +25,20 @@ router.get('/',[
 
 router.get('/:id',[
     check('id', 'It is not a valid ID').isMongoId(),
-    check('id').custom( verifyCategory ),
+    check('id').custom( verifyProduct ),
     inputValidator
 ], pathGetID)
 
 router.post('/',[
     validateJWT,
     check('name', 'The name is required').not().isEmpty(),
+    check('category', 'The category is required').not().isEmpty(),
     inputValidator
 ], pathPost)
 
 router.put('/:id',[
     validateJWT,
-    check('id').custom( verifyCategory ),
+    check('id').custom( verifyProduct ),
     check('name', 'The name is required').not().isEmpty(),
     inputValidator
 ], pathPut)
@@ -46,7 +47,7 @@ router.delete('/:id',[
     validateJWT,
     roleValid,
     check('id', 'It is not a valid ID').isMongoId(),
-    check('id').custom( verifyCategory ),
+    check('id').custom( verifyProduct ),
     inputValidator
 ], pathDelete)
 

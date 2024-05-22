@@ -1,6 +1,6 @@
 const encrypt = require('../helpers/encrypt');
 
-const User = require('../models/user');
+const User = require('../models');
 
 const pathGet = async ( req, res ) => {
 

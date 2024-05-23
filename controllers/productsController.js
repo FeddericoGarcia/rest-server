@@ -42,26 +42,24 @@ const pathGetID = async ( req, res ) => {
         });
     }
 }
-// TODO: Solucionar el match con DB ya que trae null (linea 50)
 const pathPost = async ( req, res ) => {
     
     try {
         const { user, state, ...body } = req.body;
-        const productDB = await Product.findOne({ name: req.body.name });
-        
-        console.log("producto en database", productDB)
-        console.log("producto en database", body.name)
-        
+
+        data = {
+            ...body,
+            name: req.body.name.trim().toUpperCase(),
+            user: req.user._id,
+        }
+
+        const productDB = await Product.findOne({ name: data.name });
+
         if ( productDB ){
             res.status(400).json({
                 msg: `The product ${ productDB.name } is already registered`
             });
-        }
-        
-        data = {
-            ...body,
-            name: req.body.name.toUpperCase(),
-            user: req.user._id,
+            return;
         }
 
         const product = new Product( data );
@@ -106,19 +104,24 @@ const pathPut = async ( req, res ) => {
         });
     }
 }
-// TODO: Solucionar "state" ya que es boolean e impacta como string en DB
+
 const pathDelete = async ( req, res ) => {
 
     try {
         const { id } = req.params;
-        const product = await Product.findByIdAndUpdate(id, { state: false }, { new: true });
-
-        if( !product.state ){
+        
+        const productDB = await Product.findById( id );
+        
+        console.log(productDB.name, productDB.state)
+        if( !productDB.state ){
             res.status(401).json({
-                msg: `The product ${ product.name } is inactive, status in false`
+                msg: `The product ${ productDB.name } is inactive, status in false`
             });
+            return;
         }
 
+        const product = await Product.findByIdAndUpdate(id, { state: false }, { new: true });
+        
         res.status(201).json({
             msg: 'product has been deleted',
             product

@@ -13,7 +13,7 @@ const ProductsSchema = Schema({
         default: 0,
     },
     state:{
-        type: String,
+        type: Boolean,
         required: true,
         default: true
     },

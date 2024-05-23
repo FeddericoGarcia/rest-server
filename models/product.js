@@ -5,31 +5,31 @@ const ProductsSchema = Schema({
         type: String,
         required: [true, 'The name is required']
     },
+    description: {
+        type: String,
+    },
+    price:{
+        type: Number,
+        default: 0,
+    },
     state:{
         type: String,
         required: true,
         default: true
     },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
-    price:{
-        type: Number,
-        default: 0,
+    avaliable: {
+        type: Boolean,
+        default: true,
     },
     category: {
         type: Schema.Types.ObjectId,
         ref: "Category",
         required: true,
     },
-    description: {
-        type: String,
-    },
-    avaliable: {
-        type: Boolean,
-        default: true,
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
     }
 })
 

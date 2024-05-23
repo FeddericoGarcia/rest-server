@@ -1,5 +1,8 @@
 const { Role, User, Category, Product } = require('../models');
 
+
+/**** ROLE ***/
+
 const verifyRole = async ( role = '' ) =>{
 
     const roleExists = await Role.findOne({ role });
@@ -8,6 +11,8 @@ const verifyRole = async ( role = '' ) =>{
     }
 
 }
+
+/**** USER ***/
 
 const verifyEmail = async ( email = '' ) => {
 
@@ -27,6 +32,8 @@ const verifyID = async ( id ) => {
 
 }
 
+/**** CATEGORY ***/
+
 const verifyCategory = async ( id ) => {
 
     const IDExists = await Category.findById( id );
@@ -35,6 +42,8 @@ const verifyCategory = async ( id ) => {
     };
 
 }
+
+/**** PRODUCTS ***/
 
 const verifyProduct = async ( id ) => {
 

@@ -9,11 +9,12 @@ class Server {
         this.app = express();
         this.port = process.env.port || PORT;
         this.paths = {
-            home: `/api/home`,
-            user: `/api/dashboard/user`,
             auth: `/api/auth`,
             category: `/api/category`,
+            // home: `/api/home`,
+            search: `/api/search`,
             products: `/api/products`,
+            user: `/api/dashboard/user`,
         }
         
         this.dbConnection();
@@ -36,11 +37,12 @@ class Server {
     }
     
     routes(){
-        // this.app.use(this.paths.home, require('../routes/path'));
-        this.app.use(this.paths.user, require('../routes/userPath'));
-        this.app.use(this.paths.category, require('../routes/categoryPath'));
         this.app.use(this.paths.auth, require('../routes/authPath'));
+        this.app.use(this.paths.category, require('../routes/categoryPath'));
+        this.app.use(this.paths.search, require('../routes/searchPath'));
+        // **** TODO *****  this.app.use(this.paths.home, require('../routes/path')); 
         this.app.use(this.paths.products, require('../routes/productsPath'));
+        this.app.use(this.paths.user, require('../routes/userPath'));
     }
 
     listen(){

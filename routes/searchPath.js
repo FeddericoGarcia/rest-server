@@ -1,12 +1,16 @@
 const { Router } = require('express');
-// const { check } = require('express-validator');
+const { check } = require('express-validator');
 
-// const { inputValidator } = require('../middlewares/inputValidator');
 const { search } = require('../controllers/searchController');
+
+const { inputValidator } = require('../middlewares');
 
 const router = Router();
 
-router.get('/:collection/:term', search);
+router.get('/:collection/:term',[
+    // check('id', 'It is not a valid ID').isMongoId(),
+    // inputValidator
+], search);
 
 
 module.exports = router;

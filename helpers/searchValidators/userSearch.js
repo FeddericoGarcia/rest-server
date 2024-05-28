@@ -3,21 +3,21 @@ const { User } = require('../../models');
 
 const userSearchDB = async ( term = '', res ) =>{
 
-    userByMongoId(term, res);
-    // userByName(term, res);
-}
-
-const userByMongoId = async ( term, res ) => {
-
     const isMongoID = ObjectId.isValid( term );
     if ( isMongoID ) {
         const user = await User.findById( term );
-        return res.status(200).json({
+        res.status(200).json({
             results: ( user ) ? [user] : []
         });
     }
-
+    // userByMongoId(term, res);
+    // userByName(term, res);
 }
+
+// const userByMongoId = async ( term, res ) => {
+
+
+// }
 // ***** TODO ******
 
 // const userByName = async ( term, res ) => {

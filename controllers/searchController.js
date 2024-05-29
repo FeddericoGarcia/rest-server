@@ -1,6 +1,5 @@
 const { ObjectId } = require('mongoose').Types;
 
-// const { userSearchDB } = require('../helpers/searchValidators/userSearch');
 const { User, Category, Product } = require('../models');
 
 const allowedCollections = [
@@ -12,6 +11,12 @@ const allowedCollections = [
 const search = ( req, res ) => {
 
     const { collection, term } = req.params
+
+    if ( !allowedCollections.includes( collection )){
+        return res.status(401).json({
+            msg: `The collection ${collection} is not allowed`
+        })
+    }
 
     switch ( collection ) {
         case "user": userSearch( term, res ); break;
@@ -100,8 +105,8 @@ const productSearch = async ( term = '', res ) =>{
         const isMongoID = ObjectId.isValid( term );
         if ( isMongoID ) {
             const product = await Product.findById( term )
-                                    .populate('category', 'name')
-                                    .populate('user', 'name');
+                                        .populate('category', 'name')
+                                        .populate('user', 'name');
             return res.status(200).json({
                 results: ( product ) ? [product] : []
             });

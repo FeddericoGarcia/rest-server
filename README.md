@@ -1,6 +1,5 @@
 # REST-SERVER
 Endpoints del Rest-Server con autentificación, Google Identity, CRUD y busqueda de colecciones, y términos en MongoDB
-En ciertos metodos es requerida una clave JWT (x-token) en los parametros del header
 
 
 ### Documentación

@@ -1,5 +1,6 @@
 // const generateJWT = require('../helpers/generateJWT');
 const path = require('path');
+const fileExtension = require('../helpers/fileExtension');
 
 const pathPost = async ( req, res ) => {
 
@@ -12,6 +13,8 @@ const pathPost = async ( req, res ) => {
         }
 
         const { file } = req.files;
+
+        fileExtension( file, res );
 
         uploadPath = path.join( __dirname, `../uploads/`, file.name );
 

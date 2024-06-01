@@ -1,6 +1,4 @@
-// const generateJWT = require('../helpers/generateJWT');
-const path = require('path');
-const fileExtension = require('../helpers/fileExtension');
+const { fileUpload } = require("../helpers");
 
 const pathPost = async ( req, res ) => {
 
@@ -12,22 +10,14 @@ const pathPost = async ( req, res ) => {
             });
         }
 
-        const { file } = req.files;
+        
+        const newFile = await fileUpload( req.files, '../uploads' );
 
-        fileExtension( file, res );
-
-        uploadPath = path.join( __dirname, `../uploads/`, file.name );
-
-        file.mv( uploadPath, (err) => {
-            if (err){
-                console.log( err );
-                return res.status(500).json({ err });
-            }
-            
-            res.status(201).json({
-                msg: `File uploaded to ${ uploadPath }`
-            });
-        });
+        res.status(201).json({
+            msg: `File uploaded successfully`,
+            file: newFile
+        })
+        
             
     } catch (error) {
 

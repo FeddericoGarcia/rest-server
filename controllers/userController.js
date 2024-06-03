@@ -1,6 +1,6 @@
 const encrypt = require('../helpers/encrypt');
 
-const User = require('../models');
+const User = require('../models/user');
 
 const pathGet = async ( req, res ) => {
 
@@ -15,7 +15,7 @@ const pathGet = async ( req, res ) => {
     
         res.status(201).json({
             total_docs,
-            users
+            "users-active": users
         });
     } catch (error) {
         console.error(error);

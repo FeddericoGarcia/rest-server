@@ -1,6 +1,6 @@
 const { fileUpload } = require("../helpers");
 
-const pathPost = async ( req, res ) => {
+const uploadFile = async ( req, res ) => {
 
     try {
 
@@ -30,6 +30,17 @@ const pathPost = async ( req, res ) => {
 }
 
 
+const loadImg = async ( req, res ) => {
+
+    const { collection, id } = req.params;
+
+    return res.status(201).json({
+        id,
+        collection
+    })
+}
+
 module.exports = {
-    pathPost
+    uploadFile,
+    loadImg
 }

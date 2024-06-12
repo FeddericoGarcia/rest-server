@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const { fileExtension }  = require('./fileExtension');
 
-const fileUpload = ( files, folder = '' ) => {
+const _fileUpload = ( files, folder = '' ) => {
 
     return new Promise( (resolve, reject) =>{
 
@@ -14,12 +14,12 @@ const fileUpload = ( files, folder = '' ) => {
             const uploadPath = path.join( __dirname, folder, tempName );
             file.mv( uploadPath, (err) => {
                 if (err) {
-                    reject(err);
+                    reject(err, console.log(err));
                 }
                 resolve( uploadPath );
             });
         }).catch(err => {
-            reject(err);
+            reject(err, console.log(err));
         });
 
     })
@@ -27,4 +27,4 @@ const fileUpload = ( files, folder = '' ) => {
 }
 
 
-module.exports =  {fileUpload} ;
+module.exports =  { _fileUpload} ;

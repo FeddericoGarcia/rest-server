@@ -9,7 +9,7 @@ const router = Router();
 
 router.post('/', uploadFile);
 
-router.post('/:collection/:id', [
+router.put('/:collection/:id', [
     check('id', 'It is not a valid MongoID').isMongoId(),
     check('collection').custom( c => allowedCollections( c, ['users','categories'])),
     inputValidator

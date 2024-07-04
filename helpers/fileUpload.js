@@ -16,7 +16,7 @@ const _fileUpload = ( files, folder = '' ) => {
                 if (err) {
                     reject(err, console.log(err));
                 }
-                resolve( uploadPath );
+                resolve( tempName );
             });
         }).catch(err => {
             reject(err, console.log(err));

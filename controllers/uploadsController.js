@@ -1,3 +1,6 @@
+const path = require('path');
+const fs = require('fs');
+
 const { _fileUpload } = require("../helpers");
 const Product  = require("../models/product");
 const User = require("../models/user");
@@ -5,24 +8,12 @@ const User = require("../models/user");
 const uploadFile = async ( req, res ) => {
 
     try {
-
-        if ( !req.files || Object.keys(req.files).length === 0 || !req.files.file ){
-            return res.status(400).json({
-                msg: `No files were uploaded.`
-            });
-        }
-
-        
         const newFile = await _fileUpload( req.files, '../uploads' );
-
         res.status(201).json({
             msg: `File uploaded successfully`,
             file: newFile
         })
-        
-            
     } catch (error) {
-
         console.log( error );
         res.status(500).json({
             msg: "Somethings is wrong in the controller."
@@ -34,12 +25,6 @@ const uploadFile = async ( req, res ) => {
 const loadImg = async ( req, res ) => {
     const { collection, id } = req.params;
     let _model;
-
-    if ( !req.files || Object.keys(req.files).length === 0 || !req.files.file ){
-        return res.status(400).json({
-            msg: `No files were uploaded.`
-        });
-    }
 
     switch ( collection ) {
         case "users":
@@ -72,6 +57,8 @@ const loadImg = async ( req, res ) => {
             });
     }
     
+    deletePreviousImg( _model, collection );
+
     const newModel = await _fileUpload(req.files, '../uploads/' + collection );
     if (!newModel) {
         return res.status(500).json({
@@ -94,6 +81,21 @@ const loadImg = async ( req, res ) => {
         });
     }
 };
+
+
+const deletePreviousImg = ( _model, collection ) =>{
+
+    try {
+        if( _model.img ){
+            const pathImg = path.join( __dirname, '../uploads', collection, _model.img );
+            if( fs.existsSync( pathImg ) ){
+                fs.unlinkSync( pathImg );
+            }
+        }
+    } catch (error) {
+        console.log( error );
+    }
+}
 
 
 module.exports = {

@@ -2,11 +2,9 @@ const path = require('path');
 const fs = require('fs');
 
 const { _fileUpload } = require("../helpers");
-const Product  = require("../models/product");
-const User = require("../models/user");
+const {Product, User } = require("../models");
 
 const uploadFile = async ( req, res ) => {
-
     try {
         const newFile = await _fileUpload( req.files, '../uploads' );
         res.status(201).json({
@@ -18,7 +16,6 @@ const uploadFile = async ( req, res ) => {
         res.status(500).json({
             msg: "Somethings is wrong in the controller."
         });
-
     }
 }
 
@@ -83,8 +80,62 @@ const loadImg = async ( req, res ) => {
 };
 
 
-const deletePreviousImg = ( _model, collection ) =>{
+const showImg = async ( req, res ) =>{
+    const { collection, id } = req.params;
+    let _model;
 
+    switch ( collection ) {
+        case "users":
+            try {
+                _model = await User.findById( id );
+                if (!_model) {
+                    return res.status(400).json({
+                        msg: `Inexistent user with the ID ${id}`
+                    });
+                }
+                break;
+            } catch (error) {
+                console.log(error)
+            }
+        case "products":
+            try {
+                _model = await Product.findById( id );
+                if (!_model) {
+                    return res.status(400).json({
+                        msg: `Inexistent product with the ID ${id}`
+                    });
+                }
+                break;
+            } catch (error) {
+                console.log(error)
+            }
+        default:
+            return res.status(400).json({
+                msg: `Invalid collection: ${collection}`
+            });
+    }
+
+    try {
+        if( _model.img ){
+            const pathImg = path.join( __dirname, '../uploads', collection, _model.img );
+            if( fs.existsSync( pathImg ) ){
+                return res.sendFile( pathImg );
+            }
+        } 
+
+        returnPlaceholderImg( res );
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const returnPlaceholderImg = ( res ) => {
+    const pathImg = path.join( __dirname, '../assets/no-image.jpg');
+    return res.sendFile( pathImg );
+}
+
+const deletePreviousImg = ( _model, collection ) =>{
     try {
         if( _model.img ){
             const pathImg = path.join( __dirname, '../uploads', collection, _model.img );
@@ -100,5 +151,6 @@ const deletePreviousImg = ( _model, collection ) =>{
 
 module.exports = {
     uploadFile,
-    loadImg
+    loadImg,
+    showImg
 }

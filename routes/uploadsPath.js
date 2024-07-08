@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { inputValidator } = require('../middlewares/inputValidator');
-const { uploadFile, loadImg, showImg } = require('../controllers/uploadsController');
+const { uploadFile, loadImgCloudinary, showImg } = require('../controllers/uploadsController');
 const { allowedCollections } = require('../helpers');
 const { validateFile } = require('../middlewares');
 
@@ -23,6 +23,6 @@ router.put('/:collection/:id', [
     check('collection').custom( c => allowedCollections( c, ['users','products'])),
     validateFile,
     inputValidator
-], loadImg );
+], loadImgCloudinary );
 
 module.exports = router;

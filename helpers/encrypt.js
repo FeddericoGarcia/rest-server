@@ -8,4 +8,6 @@ const encrypt = ( pass ) =>{
     return pass;
 }
 
-module.exports = encrypt;
+module.exports = {
+    encrypt
+};
